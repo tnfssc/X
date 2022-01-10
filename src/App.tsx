@@ -1,9 +1,5 @@
-function App() {
-  return (
-    <div>
-      <h1>Hello</h1>
-    </div>
-  );
-}
+import Map from "./components/map";
 
-export default App;
+export default function App() {
+  return <Map />;
+}
