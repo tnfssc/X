@@ -23,6 +23,7 @@ const MapComponent = ({
         new google.maps.Map(ref.current, {
           center: { lat: -34.397, lng: 150.644 },
           zoom: 8,
+          disableDefaultUI: true,
         }),
       );
     }
@@ -39,7 +40,9 @@ const Map: React.FC = ({ children }) => {
       render={render}
     >
       <MapComponent map={map} setMap={setMap} />
-      <MapContext.Provider value={map}>{children}</MapContext.Provider>
+      <div id="controls">
+        <MapContext.Provider value={map}>{children}</MapContext.Provider>
+      </div>
     </MapsWrapper>
   );
 };
