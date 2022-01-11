@@ -11,6 +11,7 @@ const Direcitons: React.FC<DirectionsProps> = ({ draggable = false }) => {
   const renderer = useRef<google.maps.DirectionsRenderer>();
   const map = useMap();
   const handleGo = (from: string, to: string) => {
+    renderer.current?.setMap(null);
     getDirections(from, to).then((result) => {
       if (result) {
         renderer.current = new google.maps.DirectionsRenderer({ map, draggable });
