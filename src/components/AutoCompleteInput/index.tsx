@@ -16,7 +16,7 @@ const AutoCompleteInput: React.FC<AutoCompleteInputProps> = ({ onChange, value =
           onChange(place);
         }
       });
-  }, [ref]);
+  }, [onChange, ref]);
   useEffect(() => {
     if (ref.current) ref.current.value = value;
   }, [value]);
