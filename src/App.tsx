@@ -1,13 +1,10 @@
 import Map from "./components/Map";
-import DirectionsInput from "./components/DirectionsInput";
+import Directions from "./components/Directions";
 
 export default function App() {
-  const handleGo = (from: string, to: string) => {
-    console.log({ from, to });
-  };
   return (
     <Map>
-      <DirectionsInput onGo={handleGo} />
+      <Directions />
     </Map>
   );
 }
