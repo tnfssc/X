@@ -23,9 +23,12 @@
     "ecmaVersion": 13,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint", "baseui"],
   "rules": {
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "baseui/deprecated-theme-api": "warn",
+    "baseui/deprecated-component-api": "warn",
+    "baseui/no-deep-imports": "warn"
   },
   "settings": {
     "react": {
