@@ -1,31 +1,23 @@
-import { DirectionsProvider, useDirections } from "../../contexts/directions";
 import getDirections from "../../utils/getDirections";
 import DirectionsInput from "../DirectionsInput";
 import { useMap } from "../../contexts/map";
+import { useRef } from "react";
 
-const DirectionRenderer: React.FC = () => {
-  const { renderer } = useDirections();
+const Direcitons: React.FC = () => {
+  const renderer = useRef<google.maps.DirectionsRenderer>();
   const map = useMap();
   const handleGo = (from: string, to: string) => {
     getDirections(from, to).then((result) => {
       if (result) {
-        renderer.setDirections(result);
-        renderer.setMap(map);
+        renderer.current = new google.maps.DirectionsRenderer({ map });
+        renderer.current.setDirections(result);
       }
     });
   };
   const handleClear = () => {
-    renderer.setMap(null);
+    if (renderer.current) renderer.current.setMap(null);
   };
   return <DirectionsInput onGo={handleGo} onClear={handleClear} />;
-};
-
-const Direcitons: React.FC = () => {
-  return (
-    <DirectionsProvider>
-      <DirectionRenderer />
-    </DirectionsProvider>
-  );
 };
 
 export default Direcitons;
