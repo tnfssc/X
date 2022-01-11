@@ -5,7 +5,7 @@ import CurrentPosition from "./components/CurrentPosition";
 export default function App() {
   return (
     <Map>
-      <Directions />
+      <Directions draggable />
       <CurrentPosition live />
     </Map>
   );
