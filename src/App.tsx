@@ -1,15 +1,13 @@
 import Map from "./components/Map";
-import AutoCompleteInput from "./components/AutoCompleteInput";
-import { useState } from "react";
+import DirectionsInput from "./components/DirectionsInput";
 
 export default function App() {
-  const [value, setValue] = useState("");
-  const handleChange = (value: string) => {
-    setValue(value);
+  const handleGo = (from: string, to: string) => {
+    console.log({ from, to });
   };
   return (
     <Map>
-      <AutoCompleteInput onChange={handleChange} value={value} placeholder="From" />
+      <DirectionsInput onGo={handleGo} />
     </Map>
   );
 }
