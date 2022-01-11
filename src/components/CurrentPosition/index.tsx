@@ -1,64 +1,87 @@
 import { useMap } from "../../contexts/map";
+import { useStore } from "../../contexts/store";
 import { useGeolocation } from "../../contexts/geolocation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback, useMemo } from "react";
 
-const CurrentPosition: React.FC<{ live?: boolean; disable?: boolean }> = ({ live = false, disable = false }) => {
+const createMarker = (map: google.maps.Map, latLng?: google.maps.LatLng) =>
+  new google.maps.Marker({
+    position: latLng,
+    map,
+    title: "You are here",
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 8,
+      fillColor: "red",
+      fillOpacity: 1,
+      strokeColor: "white",
+      strokeWeight: 3,
+    },
+  });
+
+const CurrentPosition: React.FC<{ live?: boolean; follow?: boolean; disable?: boolean }> = ({
+  live = false,
+  disable = false,
+}) => {
   const map = useMap();
   const geolocation = useGeolocation();
   const marker = useRef<google.maps.Marker>();
   const watchIdRef = useRef<number>();
-  useEffect(() => {
-    if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
-    if (marker.current) marker.current.setMap(null);
-    marker.current = new google.maps.Marker({
-      position: { lat: 0, lng: 0 },
-      map: map,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 8,
-        fillColor: "red",
-        fillOpacity: 1,
-        strokeColor: "white",
-        strokeWeight: 3,
-      },
-    });
-    if (navigator.geolocation && !disable) {
-      if (live) {
-        watchIdRef.current = navigator.geolocation.watchPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            if (marker.current) {
-              geolocation.current = { lat: latitude, lng: longitude };
-              marker.current.setPosition({ lat: latitude, lng: longitude });
-            }
-          },
-          (error) => {
-            console.error(error);
-          },
-          { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 },
-        );
+  const {
+    followGeolocation: { value: follow },
+  } = useStore();
+  const options = useMemo(
+    () => ({
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    }),
+    [],
+  );
+  const onPositionUpdate = useCallback(
+    (position: GeolocationPosition, follow = true) => {
+      const { latitude, longitude } = position.coords;
+      const latLng = new google.maps.LatLng(latitude, longitude);
+      geolocation.current = latLng.toJSON();
+      if (marker.current) {
+        marker.current.setPosition(latLng);
       } else {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            if (marker.current) {
-              geolocation.current = { lat: latitude, lng: longitude };
-              marker.current.setPosition({ lat: latitude, lng: longitude });
-            }
-          },
-          (error) => {
-            console.error(error);
-          },
-          { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 },
-        );
+        marker.current = createMarker(map, latLng);
       }
+      if (follow) map?.panTo(latLng);
+    },
+    [geolocation, map],
+  );
+  const onPositionError = useCallback((error: GeolocationPositionError) => {
+    console.error(error);
+  }, []);
+  const getGeolocation = useCallback(() => {
+    navigator.geolocation.getCurrentPosition(onPositionUpdate, onPositionError, options);
+  }, [onPositionError, onPositionUpdate, options]);
+  const watchGeolocation = useCallback(
+    (follow?: boolean) => {
+      watchIdRef.current = navigator.geolocation.watchPosition(
+        (p) => onPositionUpdate(p, follow),
+        onPositionError,
+        options,
+      );
+    },
+    [onPositionError, onPositionUpdate, options],
+  );
+  const clearWatch = useCallback(() => {
+    if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
+  }, []);
+
+  useEffect(() => {
+    if (marker.current) marker.current.setMap(null);
+    marker.current = createMarker(map);
+    if (!disable) {
+      getGeolocation();
+      if (live) watchGeolocation(follow);
     }
     return () => {
-      if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
-      if (marker.current) marker.current.setMap(null);
-      geolocation.current = undefined;
+      clearWatch();
     };
-  }, [map, live, disable, geolocation]);
+  }, [clearWatch, disable, follow, getGeolocation, live, map, watchGeolocation]);
   return <></>;
 };
 

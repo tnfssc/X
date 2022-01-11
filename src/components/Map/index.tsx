@@ -4,6 +4,7 @@ import { Wrapper as MapsWrapper, Status } from "@googlemaps/react-wrapper";
 import { useRef, useState, useEffect } from "react";
 import { MapContext } from "../../contexts/map";
 import { GeolocationContext } from "../../contexts/geolocation";
+import { StoreContext } from "../../contexts/store";
 
 const render = (status: Status) => {
   if (status === Status.FAILURE) return <>Error</>;
@@ -36,6 +37,8 @@ const MapComponent = ({
 const Map: React.FC = ({ children }) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const geolocation = useRef<google.maps.LatLngLiteral>();
+  const [followGeolocation, setFollowGeolocation] = useState(false);
+
   return (
     <MapsWrapper
       libraries={["places", "geometry"]}
@@ -44,9 +47,11 @@ const Map: React.FC = ({ children }) => {
     >
       <MapComponent map={map} setMap={setMap} />
       <div id="controls">
-        <GeolocationContext.Provider value={geolocation}>
-          <MapContext.Provider value={map}>{children}</MapContext.Provider>
-        </GeolocationContext.Provider>
+        <StoreContext.Provider value={{ followGeolocation: { value: followGeolocation, set: setFollowGeolocation } }}>
+          <GeolocationContext.Provider value={geolocation}>
+            <MapContext.Provider value={map}>{children}</MapContext.Provider>
+          </GeolocationContext.Provider>
+        </StoreContext.Provider>
       </div>
     </MapsWrapper>
   );
