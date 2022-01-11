@@ -51,6 +51,7 @@ const CurrentPosition: React.FC<{ live?: boolean; disable?: boolean }> = ({ live
     }
     return () => {
       if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
+      if (marker.current) marker.current.setMap(null);
     };
   }, [map, live, disable]);
   return <></>;
