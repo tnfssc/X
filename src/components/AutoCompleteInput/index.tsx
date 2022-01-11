@@ -1,10 +1,12 @@
 import { useRef, useEffect } from "react";
-
-export interface AutoCompleteInputProps {
+import { Input, InputProps } from "baseui/input";
+interface _AutoCompleteInputProps {
   onChange: (value: string) => void;
   value?: string;
   [key: string]: unknown;
 }
+
+export type AutoCompleteInputProps = Omit<InputProps, "onChange"> & _AutoCompleteInputProps;
 
 const AutoCompleteInput: React.FC<AutoCompleteInputProps> = ({ onChange, value = "", ...props }) => {
   const ref = useRef<HTMLInputElement>(null);
@@ -20,7 +22,7 @@ const AutoCompleteInput: React.FC<AutoCompleteInputProps> = ({ onChange, value =
   useEffect(() => {
     if (ref.current) ref.current.value = value;
   }, [value]);
-  return <input ref={ref} {...props} />;
+  return <Input inputRef={ref} {...props} />;
 };
 
 export default AutoCompleteInput;
