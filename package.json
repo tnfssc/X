@@ -28,6 +28,7 @@
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
     "@vitejs/plugin-react": "^1.0.7",
+    "dotenv": "^11.0.0",
     "eslint": "^8.6.0",
     "eslint-plugin-baseui": "^10.7.1",
     "eslint-plugin-import": "^2.25.4",
@@ -38,7 +39,8 @@
     "lint-staged": ">=10",
     "prettier": "^2.5.1",
     "typescript": "^4.4.4",
-    "vite": "^2.7.2"
+    "vite": "^2.7.2",
+    "vite-plugin-pwa": "^0.11.12"
   },
   "lint-staged": {
     "*.{ts,js,tsx,jsx}": "eslint --fix",
