@@ -1,8 +1,10 @@
 import { useMap } from "../../contexts/map";
+import { useGeolocation } from "../../contexts/geolocation";
 import { useEffect, useRef } from "react";
 
 const CurrentPosition: React.FC<{ live?: boolean; disable?: boolean }> = ({ live = false, disable = false }) => {
   const map = useMap();
+  const geolocation = useGeolocation();
   const marker = useRef<google.maps.Marker>();
   const watchIdRef = useRef<number>();
   useEffect(() => {
@@ -26,6 +28,7 @@ const CurrentPosition: React.FC<{ live?: boolean; disable?: boolean }> = ({ live
           (position) => {
             const { latitude, longitude } = position.coords;
             if (marker.current) {
+              geolocation.current = { lat: latitude, lng: longitude };
               marker.current.setPosition({ lat: latitude, lng: longitude });
             }
           },
@@ -39,6 +42,7 @@ const CurrentPosition: React.FC<{ live?: boolean; disable?: boolean }> = ({ live
           (position) => {
             const { latitude, longitude } = position.coords;
             if (marker.current) {
+              geolocation.current = { lat: latitude, lng: longitude };
               marker.current.setPosition({ lat: latitude, lng: longitude });
             }
           },
@@ -52,8 +56,9 @@ const CurrentPosition: React.FC<{ live?: boolean; disable?: boolean }> = ({ live
     return () => {
       if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
       if (marker.current) marker.current.setMap(null);
+      geolocation.current = undefined;
     };
-  }, [map, live, disable]);
+  }, [map, live, disable, geolocation]);
   return <></>;
 };
 
