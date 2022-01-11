@@ -25,7 +25,7 @@ const MapComponent = ({
           center: { lat: -34.397, lng: 150.644 },
           zoom: 8,
           disableDefaultUI: true,
-          gestureHandling: "cooperative",
+          gestureHandling: "greedy",
         }),
       );
     }
