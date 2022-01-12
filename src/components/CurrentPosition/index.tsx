@@ -3,18 +3,23 @@ import { useStore } from "../../contexts/store";
 import { useGeolocation } from "../../contexts/geolocation";
 import { useEffect, useRef, useCallback, useMemo } from "react";
 
-const createMarker = (map: google.maps.Map, latLng?: google.maps.LatLng) =>
+const markerIcon: google.maps.Symbol = {
+  path: 3,
+  scale: 8,
+  fillColor: "red",
+  fillOpacity: 1,
+  strokeColor: "white",
+  strokeWeight: 3,
+};
+
+const createMarker = (map: google.maps.Map, latLng?: google.maps.LatLng, rotation?: number) =>
   new google.maps.Marker({
     position: latLng,
     map,
     title: "You are here",
     icon: {
-      path: google.maps.SymbolPath.CIRCLE,
-      scale: 8,
-      fillColor: "red",
-      fillOpacity: 1,
-      strokeColor: "white",
-      strokeWeight: 3,
+      ...markerIcon,
+      rotation,
     },
   });
 
@@ -45,8 +50,12 @@ const CurrentPosition: React.FC<{ live?: boolean; follow?: boolean; disable?: bo
       geolocation.current.pos = latLng.toJSON();
       if (marker.current) {
         marker.current.setPosition(latLng);
+        marker.current.setIcon({
+          ...((marker.current.getIcon() as google.maps.Symbol) || markerIcon),
+          rotation: position.coords.heading,
+        });
       } else {
-        marker.current = createMarker(map, latLng);
+        marker.current = createMarker(map, latLng, position.coords.heading ?? undefined);
       }
       if (follow) map?.panTo(latLng);
     },
