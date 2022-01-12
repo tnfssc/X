@@ -27,6 +27,7 @@ const MapComponent = ({
           zoom: 8,
           disableDefaultUI: true,
           gestureHandling: "greedy",
+          mapId: import.meta.env.VITE_PUBLIC_GOOGLE_MAPS_MAP_ID as string,
         }),
       );
     }
@@ -42,8 +43,10 @@ const Map: React.FC = ({ children }) => {
   return (
     <MapsWrapper
       libraries={["places", "geometry"]}
-      apiKey={import.meta.env.VITE_PUBLIC_GOOGLE_MAPS_API_KEY as string}
+      version="beta"
       render={render}
+      apiKey={import.meta.env.VITE_PUBLIC_GOOGLE_MAPS_API_KEY as string}
+      // apiKey={""}
     >
       <MapComponent map={map} setMap={setMap} />
       <div id="controls">
