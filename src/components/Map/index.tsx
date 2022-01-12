@@ -3,7 +3,7 @@ import "./index.css";
 import { Wrapper as MapsWrapper, Status } from "@googlemaps/react-wrapper";
 import { useRef, useState, useEffect } from "react";
 import { MapContext } from "../../contexts/map";
-import { GeolocationContext } from "../../contexts/geolocation";
+import { GeolocationContext, GeolocationValue } from "../../contexts/geolocation";
 import { StoreContext } from "../../contexts/store";
 
 const render = (status: Status) => {
@@ -36,7 +36,7 @@ const MapComponent = ({
 
 const Map: React.FC = ({ children }) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  const geolocation = useRef<google.maps.LatLngLiteral>();
+  const geolocation = useRef<GeolocationValue>({});
   const [followGeolocation, setFollowGeolocation] = useState(false);
 
   return (

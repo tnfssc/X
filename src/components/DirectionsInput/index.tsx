@@ -29,7 +29,7 @@ const DirectionsInput: React.FC<DirectionsInputProps> = ({ onGo, onClear }) => {
   };
   const handleCurrentLocation = () => {
     handleClear();
-    setFrom(geolocation.current?.lat + "," + geolocation.current?.lng);
+    setFrom(geolocation.current.pos?.lat + "," + geolocation.current.pos?.lng);
   };
   return (
     <Block

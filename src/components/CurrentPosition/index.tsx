@@ -41,7 +41,7 @@ const CurrentPosition: React.FC<{ live?: boolean; follow?: boolean; disable?: bo
     (position: GeolocationPosition, follow = true) => {
       const { latitude, longitude } = position.coords;
       const latLng = new google.maps.LatLng(latitude, longitude);
-      geolocation.current = latLng.toJSON();
+      geolocation.current.pos = latLng.toJSON();
       if (marker.current) {
         marker.current.setPosition(latLng);
       } else {

@@ -1,6 +1,12 @@
 import { createContext, useContext } from "react";
 
-export const GeolocationContext = createContext<React.MutableRefObject<google.maps.LatLngLiteral | undefined>>({
-  current: undefined,
+export type GeolocationValue = Partial<{
+  pos: google.maps.LatLngLiteral | null;
+  coords: GeolocationCoordinates | null;
+  timestamp: number | null;
+}>;
+
+export const GeolocationContext = createContext<React.MutableRefObject<GeolocationValue>>({
+  current: {},
 });
 export const useGeolocation = () => useContext(GeolocationContext);
