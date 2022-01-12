@@ -60,7 +60,7 @@ const CurrentPosition: React.FC<{ live?: boolean; follow?: boolean; disable?: bo
       }
       if (follow && map) {
         map.panTo(latLng);
-        map.setHeading(rotation);
+        map.setHeading(position.coords.heading ?? 0);
       }
     },
     [geolocation, map],
