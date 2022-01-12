@@ -19,7 +19,7 @@ const createMarker = (map: google.maps.Map, latLng?: google.maps.LatLng, rotatio
     title: "You are here",
     icon: {
       ...markerIcon,
-      rotation,
+      rotation: ((rotation ?? 0) + 180) % 360,
     },
   });
 
@@ -52,12 +52,15 @@ const CurrentPosition: React.FC<{ live?: boolean; follow?: boolean; disable?: bo
         marker.current.setPosition(latLng);
         marker.current.setIcon({
           ...((marker.current.getIcon() as google.maps.Symbol) || markerIcon),
-          rotation: position.coords.heading,
+          rotation: ((position.coords.heading ?? 0) + 180) % 360,
         });
       } else {
         marker.current = createMarker(map, latLng, position.coords.heading ?? undefined);
       }
-      if (follow) map?.panTo(latLng);
+      if (follow && map) {
+        map.panTo(latLng);
+        map.set;
+      }
     },
     [geolocation, map],
   );
