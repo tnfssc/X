@@ -48,18 +48,19 @@ const CurrentPosition: React.FC<{ live?: boolean; follow?: boolean; disable?: bo
       const latLng = new google.maps.LatLng(latitude, longitude);
       geolocation.current = position;
       geolocation.current.pos = latLng.toJSON();
+      const rotation = ((position.coords.heading ?? 0) + 180) % 360;
       if (marker.current) {
         marker.current.setPosition(latLng);
         marker.current.setIcon({
           ...((marker.current.getIcon() as google.maps.Symbol) || markerIcon),
-          rotation: ((position.coords.heading ?? 0) + 180) % 360,
+          rotation,
         });
       } else {
-        marker.current = createMarker(map, latLng, position.coords.heading ?? undefined);
+        marker.current = createMarker(map, latLng, rotation);
       }
       if (follow && map) {
         map.panTo(latLng);
-        map.set;
+        map.setTilt(rotation);
       }
     },
     [geolocation, map],
