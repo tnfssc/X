@@ -1,18 +1,21 @@
 import { useGeolocation } from "../../contexts/geolocation";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 const SpeedAndDirection = () => {
   const geolocation = useGeolocation();
   const speedRef = useRef<HTMLDivElement>(null);
   const directionRef = useRef<HTMLDivElement>(null);
+
+  if (speedRef.current) speedRef.current.innerHTML = `Speed: ${geolocation.current.coords?.speed} m/s`;
+  if (directionRef.current) directionRef.current.innerHTML = `Direction: ${geolocation.current.coords?.heading}°`;
+
+  const [, setForceUpdate] = useState(0);
+
   useEffect(() => {
-    if (geolocation.current.coords) {
-      const { speed, heading } = geolocation.current.coords;
-      const speedText = `Speed: ${speed} m/s`;
-      const directionText = `Direction: ${heading}°`;
-      if (speedRef.current) speedRef.current.innerHTML = speedText;
-      if (directionRef.current) directionRef.current.innerHTML = directionText;
-    }
+    const l = setTimeout(() => {
+      setForceUpdate((p) => p + 1);
+    }, 1000);
+    return () => clearTimeout(l);
   });
   return (
     <div>
