@@ -53,7 +53,7 @@ const CurrentPosition: React.FC<{ live?: boolean; follow?: boolean; disable?: bo
         marker.current.setPosition(latLng);
         marker.current.setIcon({
           ...((marker.current.getIcon() as google.maps.Symbol) || markerIcon),
-          rotation,
+//           rotation,
         });
       } else {
         marker.current = createMarker(map, latLng, rotation);
