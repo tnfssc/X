@@ -46,7 +46,7 @@ const DirectionsInput: React.FC<DirectionsInputProps> = ({ onGo, onClear }) => {
         </Block>
         <AutoCompleteInput onChange={setTo} value={to} placeholder="To" />
         <Block width="100%" display="flex">
-          <Block backgroundColor="rgb(238, 238, 238)" display="flex" justifyContent="center" alignItems="center">
+          <Block backgroundColor="rgb(51, 51, 51);" display="flex" justifyContent="center" alignItems="center">
             <Checkbox
               checked={followGeolocation.value}
               onChange={(e) => followGeolocation.set((e.target as unknown as { checked: boolean }).checked)}
