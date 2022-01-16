@@ -2,40 +2,54 @@
 
 ## Research
 
-- Experiment with various technologies available to us and see which works the best for our project.
-- Starting with web technologies such as React, experiment with various available SDKs and services.
-- Flutter is a great tool for building mobile apps. Try it out and see how it works.
-- If building a cross platform app is not an option, try building a native app.
-- Start with android. Use various SDKs like Google Maps, Mapbox, etc.
-- If android app development is a success, gather resources to build an iOS app and build it.
+- We experimented with various technologies available to us.
+- Starting with web technologies such as React, we tried out many available SDKs and services.
+- Using React and Google maps, we had partial success in creating a navigation app.
+- We realized that if we continue down this path, it would take a lot of time and effort to create the app.
+- Flutter was an interesting choice. It was a great tool to use for creating cross platform mobile apps.
+- But we quickly realized that there were no libraries available for our particular needs.
+- We planned on creating our own library, but looking at the complexity, we came to a conclusion that it wasn't the best idea.
+- Finally, after failing to create a library, we decided to create a native app.
+- We plan to develop an Android native app using Kotlin and Android Platform.
 
 ## Design
 
-### Frontend
+### The Application
 
 - Design a simple, intuitive, and easy to use app.
 - First, focus on functionality.
-- Once the app is fully functional, focus on design.
-- Use Figma to design the app. Use a lot of animations and transitions.
+- Once the app is fully functional, focus on design and animations.
+- The app is initially going to be a simple, single screen app.
+- That screen will be the main screen containing a map.
+- The map will be centered on the user's current location.
+- The user can lookup directions to a destination and start navigating.
+- The path may contain dangerous roads and spots.
+- We detect them ahead of time and show a warning.
+- When the user is approaching the dangerous spot, we announce a warning like "Please slow down. Danger ahead!".
+- We may also incorporate a button to show an alternate route avoiding the danger altogether.
 
-### Backend
+### The Service
 
 - The backend should be able to handle all the data and logic.
-- It should be fast and performant.
-- It is best to use a microservices style architecture.
-- Here is a representational architecture of the backend.
+- It must be fast, performant but distributed.
+- It is best to use a microservices architecture because of parallel and independent development style.
+- Here is a representational (tentative) architecture of the backend.
 
 ![Architecture](https://i.postimg.cc/43LbsXQv/arch.png)
 
 ## Development
 
-- Once the experimentation part is complete, the rest of the work is very straightforward.
-- The work can be distributed among the developers, and the process can go on in full tilt.
-- Using Git and Docker, people can work on different parts of the application and be merged at the end.
+- Right now, the backend is mostly straight forward.
+- The frontend is a bit more complex.
+- Android development is a bit more involved than web development.
+- Focussing completely on the Android app is the current plan.
+- Once the app is taking its intended shape, resources can be allocated to the backend and other parts of the service.
+- Developing other screens such as the landing screen and the settings screen can be done now.
+- Thus, the MVP is complete.
 
 ## Technologies and Tools (tentative)
 
-- Kotlin on Android Platform
+- Android using Kotlin and Android Platform
 - Mapbox SDK for maps and navigation services
 - Supabase or Firebase for authentication
 - React Admin app
